@@ -1,0 +1,21 @@
+#!/bin/sh
+
+TARGET_DIR="${TARGET_DIR:-/srv/nswi177/}"
+
+set -e
+
+if ! cd "$TARGET_DIR" 2>/dev/null; then
+    echo "Seems that $TARGET_DIR is not mounted." >&2
+fi
+
+repo_url="$( grep -o 'git@gitlab\.mff\.cuni\.cz:teaching/nswi177/2021-summer/student-.*\.git' .git/config | head -n 1 || true )"
+
+if [ -z "$repo_url" ]; then
+    echo "Seems that $TARGET_DIR does not contain your submission repository." >&2
+    exit 1
+fi
+
+repo_hash="$( echo -n "$repo_url" | md5sum - | cut -c 1-32 )"
+selected_commit="$( git log --format='%H' | tail -n 7 | head -n 1 )"
+
+echo "$repo_hash $selected_commit"
