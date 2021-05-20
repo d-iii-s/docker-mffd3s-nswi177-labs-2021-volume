@@ -2,10 +2,9 @@
 
 TARGET_DIR="${TARGET_DIR:-/srv/nswi177/}"
 
-set -e
-
 if ! cd "$TARGET_DIR" 2>/dev/null; then
     echo "Seems that $TARGET_DIR is not mounted." >&2
+    exit 1
 fi
 
 repo_url="$( grep -o 'git@gitlab\.mff\.cuni\.cz:teaching/nswi177/2021-summer/student-.*\.git' .git/config | head -n 1 || true )"
