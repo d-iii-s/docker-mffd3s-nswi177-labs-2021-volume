@@ -14,7 +14,7 @@ if [ -z "$repo_url" ]; then
     exit 1
 fi
 
-repo_hash="$( echo -n "$repo_url" | md5sum - | cut -c 1-32 )"
-selected_commit="$( git log --format='%H' | tail -n 7 | head -n 1 )"
+repo_hash="$( echo -n "$repo_url$repo_url" | md5sum - | cut -c 1-32 )"
+selected_commit="$( git log --format='%H' | tail -n 9 | head -n 1 )"
 
 echo "$repo_hash $selected_commit"
